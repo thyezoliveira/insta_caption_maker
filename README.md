@@ -20,6 +20,11 @@ Para instalar o `uv`, execute o seguinte comando:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
+Após instalar o `uv`, sincronize o ambiente do projeto:
+```bash
+uv sync
+```
+
 ## 🚀 Como Usar
 
 1.  **Prepare seu CSV:** Crie um arquivo chamado `arquivo.csv` na raiz do projeto com o seguinte cabeçalho:
@@ -29,7 +34,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 2.  **Execute o Script:**
     ```bash
-    python main.py
+    uv run main.py
     ```
 3.  **Confira o Resultado:** Os arquivos serão gerados na pasta `/captions` seguindo o padrão `caption_1.txt`, `caption_2.txt`, etc.
 
