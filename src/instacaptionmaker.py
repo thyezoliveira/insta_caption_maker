@@ -1,20 +1,38 @@
 import csv
 import random
-import os
+from pathlib import Path
+from typing import List, Dict, Optional
 
 class instaCM:
     """
     Classe para carregar e processar legendas e hashtags de um arquivo CSV.
     """
-    def __init__(self, file_path="arquivo.csv"):
-        self.file_path = file_path
+    def __init__(self, file_path: str = "arquivo.csv"):
+        self.file_path = Path(file_path)
 
-    def read_csv(self):
+    def _process_hashtags(self, hashtags_raw: str, count: int) -> str:
         """
-        Lê o CSV, valida as colunas e processa as hashtags (escolhendo 5 aleatórias).
-        Retorna uma lista de dicionários.
+        Método interno para limpar e selecionar hashtags aleatórias.
         """
-        if not os.path.exists(self.file_path):
+        if not hashtags_raw:
+            return ""
+            
+        # Converte em lista e remove espaços extras
+        hashtags_list = [h.strip() for h in hashtags_raw.split(' ') if h.strip()]
+        
+        # Seleciona o número solicitado ou o máximo disponível
+        num_to_select = min(count, len(hashtags_list))
+        selected = random.sample(hashtags_list, num_to_select)
+        
+        return " ".join(selected)
+
+    def read_csv(self, num_hashtags: int = 5) -> List[Dict[str, str]]:
+        """
+        Lê o CSV, valida colunas e processa hashtags.
+        :param num_hashtags: Quantidade de hashtags aleatórias a selecionar.
+        :return: Lista de dicionários com 'legenda' e 'hashtags'.
+        """
+        if not self.file_path.exists():
             print(f"Erro: O arquivo '{self.file_path}' não foi encontrado.")
             return []
 
@@ -24,58 +42,46 @@ class instaCM:
             with open(self.file_path, mode='r', encoding='utf-8') as file:
                 reader = csv.DictReader(file)
                 
-                # Validação básica de colunas
-                if 'legenda' not in reader.fieldnames or 'hashtags' not in reader.fieldnames:
+                # Validação de cabeçalho
+                if not reader.fieldnames or 'legenda' not in reader.fieldnames or 'hashtags' not in reader.fieldnames:
                     print("Erro: O CSV deve conter as colunas 'legenda' e 'hashtags'.")
                     return []
 
                 for row in reader:
-                    legenda = row['legenda']
-                    hashtags_raw = row['hashtags'].strip()
-                    
-                    # Converte a string de hashtags em uma lista (separando por espaços)
-                    # Filtra strings vazias caso haja múltiplos espaços
-                    hashtags_list = [h for h in hashtags_raw.split(' ') if h]
-                    
-                    # Seleciona 5 aleatórias (ou todas se tiver menos de 5)
-                    num_to_select = min(5, len(hashtags_list))
-                    selected_hashtags = random.sample(hashtags_list, num_to_select)
-                    
-                    # Junta de volta em uma string separada por espaços
-                    hashtags_string = " ".join(selected_hashtags)
-
                     processed_data.append({
-                        "legenda": legenda,
-                        "hashtags": hashtags_string
+                        "legenda": row['legenda'],
+                        "hashtags": self._process_hashtags(row['hashtags'], num_hashtags)
                     })
 
             return processed_data
 
         except Exception as e:
-            print(f"Ocorreu um erro ao ler o arquivo: {e}")
+            print(f"Erro ao processar CSV: {e}")
             return []
 
-    def generate_caption_files(self, data_list, output_dir="captions"):
+    def generate_caption_files(self, data_list: List[Dict[str, str]], output_dir: str = "captions") -> int:
         """
-        Cria a pasta de destino e gera um arquivo .txt para cada item na lista de dados.
+        Gera arquivos .txt a partir da lista de dados processada.
+        :param data_list: Lista de dicionários (legenda e hashtags).
+        :param output_dir: Pasta de destino.
+        :return: Total de arquivos gerados.
         """
-        # Verifica se a pasta existe, caso contrário, cria
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-            print(f"Pasta '{output_dir}' criada com sucesso.")
-
-        count = 0
-        for i, item in enumerate(data_list, start=1):
-            file_name = f"caption_{i}.txt"
-            file_path = os.path.join(output_dir, file_name)
+        dest_path = Path(output_dir)
+        
+        try:
+            dest_path.mkdir(parents=True, exist_ok=True)
             
-            try:
+            count = 0
+            for i, item in enumerate(data_list, start=1):
+                file_path = dest_path / f"caption_{i}.txt"
+                
                 with open(file_path, "w", encoding="utf-8") as f:
-                    f.write(f"{item['legenda']}\n\n")
-                    f.write(f"{item['hashtags']}")
+                    f.write(f"{item['legenda']}\n\n{item['hashtags']}")
                 count += 1
-            except Exception as e:
-                print(f"Erro ao criar o arquivo {file_name}: {e}")
+                
+            print(f"Sucesso: {count} arquivos gerados em '{output_dir}/'.")
+            return count
 
-        print(f"Processo concluído: {count} arquivos de legenda gerados em '{output_dir}/'.")
-        return count
+        except Exception as e:
+            print(f"Erro ao gerar arquivos: {e}")
+            return 0
