@@ -32,5 +32,9 @@ Um utilitário simples em Python para automatizar a criação de legendas do Ins
 
 ## ✒️ Créditos
 
-Desenvolvido como um protótipo de automação para criadores de conteúdo.
-Criado com o auxílio do Gemini CLI.
+Desenvolvido por **Thyéz de Oliveira Monteiro**.
+
+- **Empresa:** [Forjatech](https://forjatech-oficial.netlify.app)
+- **Atuação:** Desenvolvedor na **SMECICT** (Secretaria Municipal de Educação, Cultura, Inclusão, Ciência e Tecnologia) em Saquarema.
+
+Este projeto foi realizado com o apoio de ferramentas de IA generativa, aliado a conhecimento técnico especializado, revisão humana e um trabalho criterioso e metódico.
