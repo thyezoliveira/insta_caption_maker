@@ -11,6 +11,15 @@ Um utilitário simples em Python para automatizar a criação de legendas do Ins
 > [!TIP]
 > **Dica:** Você pode criar sua planilha com as colunas `legenda` e `hashtags` no **Google Sheets** e depois exportar como **CSV (Valores separados por vírgula)**. O arquivo estará pronto para ser usado pelo sistema!
 
+## 📋 Pré-requisitos
+
+Antes de começar, você precisará ter o **Python (3.12+)** e o **uv** instalados em sua máquina. O `uv` é o gerenciador de pacotes e ambientes utilizado neste projeto.
+
+Para instalar o `uv`, execute o seguinte comando:
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
 ## 🚀 Como Usar
 
 1.  **Prepare seu CSV:** Crie um arquivo chamado `arquivo.csv` na raiz do projeto com o seguinte cabeçalho:

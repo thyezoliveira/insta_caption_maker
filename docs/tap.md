@@ -14,6 +14,7 @@ Automatizar a gestão e formatação de legendas e hashtags para o Instagram, re
 
 ## 4. Requisitos de Alto Nível
 - Linguagem: Python 3.12+
+- Gerenciador de Pacotes: [uv](https://github.com/astral-sh/uv)
 - Dependências: Apenas bibliotecas padrão (`os`, `csv`, `random`, `sys`).
 - Saída: Pasta `captions/` contendo arquivos numerados.
 
