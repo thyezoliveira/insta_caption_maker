@@ -8,6 +8,9 @@ Um utilitário simples em Python para automatizar a criação de legendas do Ins
 - **Hashtag Mixer:** Seleciona aleatoriamente 5 hashtags de uma lista maior para evitar repetição e Shadowban.
 - **Gerador de Arquivos:** Cria automaticamente arquivos `.txt` organizados em uma pasta `captions/`.
 
+> [!TIP]
+> **Dica:** Você pode criar sua planilha com as colunas `legenda` e `hashtags` no **Google Sheets** e depois exportar como **CSV (Valores separados por vírgula)**. O arquivo estará pronto para ser usado pelo sistema!
+
 ## 🚀 Como Usar
 
 1.  **Prepare seu CSV:** Crie um arquivo chamado `arquivo.csv` na raiz do projeto com o seguinte cabeçalho:
